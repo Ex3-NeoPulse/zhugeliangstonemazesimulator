@@ -1,0 +1,1280 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>จิตยุทธศาสตร์ค่ายกลหินแปดทิศของขงเบ้ง (Zhuge Liang's Eight Trigrams Stone Maze)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Sarabun & Cinzel Decorative -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800;900&family=Sarabun:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        thai: ['Sarabun', 'sans-serif'],
+                        cinzel: ['Cinzel', 'serif'],
+                    },
+                    colors: {
+                        ink: '#0b0f19',
+                        parchment: '#e7d8be',
+                        cinnabar: '#dc2626',
+                        jade: '#10b981',
+                        gold: '#f59e0b',
+                        slatefog: '#334155'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Sarabun', sans-serif;
+            background-color: #080c14;
+            color: #f1f5f9;
+            overflow-x: hidden;
+        }
+
+        .chinese-seal {
+            writing-mode: vertical-rl;
+            text-orientation: upright;
+        }
+
+        /* Subtle pulsing glow for triggers */
+        @keyframes pulseGlow {
+
+            0%,
+            100% {
+                opacity: 0.3;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.8;
+                transform: scale(1.05);
+            }
+        }
+
+        .pulse-layer {
+            animation: pulseGlow 4s ease-in-out infinite;
+        }
+
+        /* Custom Scrollbars */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #d97706;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-[#090d16] text-slate-200 min-h-screen flex flex-col antialiased selection:bg-amber-600 selection:text-white">
+
+    <header class="border-b border-slate-800 bg-[#0e1422]/90 backdrop-blur sticky top-0 z-40 px-4 py-3">
+        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center space-x-3">
+                <div
+                    class="w-10 h-10 rounded-lg bg-gradient-to-br from-amber-600 to-red-800 flex items-center justify-center text-xl font-bold font-cinzel text-white shadow-lg shadow-amber-900/30">
+                    八
+                </div>
+                <div>
+                    <h1 class="text-base sm:text-lg font-bold text-amber-400 flex items-center gap-2">
+                        <span>พิมพ์เขียวค่ายกลหิน 8 ทิศ 64 ค่าย</span>
+                        <span
+                            class="text-xs px-2 py-0.5 rounded-full bg-amber-950/80 border border-amber-500/30 text-amber-300">สถาปัตยกรรมทางปัญญาของขงเบ้ง</span>
+                    </h1>
+                    <p class="text-xs text-slate-400">แบบจำลองวิศวกรรมธรรมชาติ & จิตวิทยาการศึกริมหาดกัวอี้ปิง (鱼腹浦)</p>
+                </div>
+            </div>
+
+            <div class="flex items-center bg-slate-900/80 p-1 rounded-xl border border-slate-700/60 text-xs">
+                <button id="btnModeMind"
+                    class="px-3 py-1.5 rounded-lg font-medium transition-all bg-amber-600 text-white shadow">
+                    🧠 สมองขงเบ้ง (ตรรกะ & เวกเตอร์)
+                </button>
+                <button id="btnModeTactical"
+                    class="px-3 py-1.5 rounded-lg font-medium transition-all text-slate-400 hover:text-white">
+                    🛡️ ผังสนามรบ 8 ทิศ
+                </button>
+                <button id="btnModeLuXun"
+                    class="px-3 py-1.5 rounded-lg font-medium transition-all text-slate-400 hover:text-white">
+                    👁️ สายตาลู่ซุน (หมอกลวงตา)
+                </button>
+            </div>
+
+            <!-- Sound toggle & Reset -->
+            <div class="flex items-center gap-2">
+                <button id="btnAudioToggle"
+                    class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-amber-300 border border-slate-700 flex items-center gap-1.5 transition">
+                    <span id="audioIcon">🔊</span> <span id="audioText">เสียงสายลม & น้ำ</span>
+                </button>
+                <button id="btnResetSimulation"
+                    class="px-3 py-1.5 rounded-lg bg-red-950/60 hover:bg-red-900/80 text-xs text-red-300 border border-red-800/40 transition">
+                    ↺ เริ่มจำลองใหม่
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto w-full p-3 sm:p-4 grid grid-cols-1 lg:grid-cols-12 gap-4 flex-1">
+
+        <!-- LEFT / MAIN: Visual Canvas & Simulation Dashboard (8 cols) -->
+        <section class="lg:col-span-8 flex flex-col gap-3">
+
+            <!-- Interactive Canvas Card -->
+            <div
+                class="relative bg-slate-950 rounded-2xl border border-slate-800 overflow-hidden shadow-2xl flex-1 flex flex-col min-h-[520px]">
+
+                <!-- Status Overlay Indicators -->
+                <div class="absolute top-3 left-3 z-20 flex flex-wrap gap-2 pointer-events-none">
+                    <div
+                        class="px-2.5 py-1 rounded-md bg-slate-900/90 border border-slate-700/80 text-xs text-slate-300 backdrop-blur shadow flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
+                        <span id="canvasStatusText">มุมมอง: อัลกอริทึมสมองขงเบ้ง (Cognitive Matrix)</span>
+                    </div>
+                    <div
+                        class="px-2.5 py-1 rounded-md bg-slate-900/90 border border-slate-700/80 text-xs text-amber-300 backdrop-blur shadow">
+                        ☀️ มุมตกกระทบแดด: <span id="lblSunAngle">11:00 น. (35°)</span>
+                    </div>
+                    <div
+                        class="px-2.5 py-1 rounded-md bg-slate-900/90 border border-slate-700/80 text-xs text-cyan-300 backdrop-blur shadow">
+                        💨 ลมแม่น้ำแยงซี: <span id="lblWindSpeed">ปานกลาง (หวนกลับ)</span>
+                    </div>
+                </div>
+
+                <!-- Simulation HUD: Lu Xun Status -->
+                <div id="luXunHud"
+                    class="absolute top-3 right-3 z-20 bg-slate-900/95 border border-red-900/60 rounded-xl p-2.5 max-w-[240px] text-xs backdrop-blur shadow-xl transition-all">
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-1.5 mb-1.5">
+                        <span class="font-bold text-red-400 flex items-center gap-1">
+                            <span>🐎 กองทัพลู่ซุน</span>
+                        </span>
+                        <span id="txtLuXunStep" class="text-[10px] text-slate-400">ยังไม่เข้าค่ายกล</span>
+                    </div>
+                    <div class="space-y-1">
+                        <div class="flex justify-between text-[11px]">
+                            <span class="text-slate-400">ระดับความตื่นตระหนก:</span>
+                            <span id="txtPanicLevel" class="font-bold text-emerald-400">0% (ปกติ)</span>
+                        </div>
+                        <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                            <div id="barPanic" class="h-full bg-emerald-500 transition-all duration-300"
+                                style="width: 0%"></div>
+                        </div>
+                        <div class="text-[10px] text-amber-200/90 italic pt-1 leading-tight" id="txtLuXunThought">
+                            "ข้าเห็นเพียงกองหินธรรมดาของเด็กเล่น ขงเบ้งคิดจะหยุดทัพง่อก๊กด้วยสิ่งนี้หรือ?"
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Canvas Element for dynamic simulation -->
+                <div class="relative w-full flex-1 flex items-center justify-center overflow-hidden">
+                    <canvas id="mazeCanvas" class="w-full h-full cursor-crosshair"></canvas>
+
+                    <!-- Lu Xun View Distortion Vignette Layer (Shown in LuXun mode) -->
+                    <div id="disorientationOverlay"
+                        class="absolute inset-0 pointer-events-none transition-opacity duration-500 opacity-0 bg-[radial-gradient(circle_at_center,transparent_30%,rgba(15,23,42,0.85)_80%,rgba(185,28,28,0.3)_100%)]">
+                    </div>
+                </div>
+
+                <div
+                    class="bg-slate-900/95 border-t border-slate-800 p-3 flex flex-wrap items-center justify-between gap-3 z-20">
+
+                    <!-- Walkthrough Step Controls -->
+                    <div class="flex items-center gap-2">
+                        <button id="btnStepLuXun"
+                            class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-amber-600 to-red-600 hover:from-amber-500 hover:to-red-500 text-white font-semibold text-xs shadow-lg shadow-amber-900/30 flex items-center gap-1.5 transition active:scale-95">
+                            <span>▶ ก้าวเดินทัพลู่ซุน</span>
+                            <span class="text-[10px] opacity-80">(สเต็ปถัดไป)</span>
+                        </button>
+                        <button id="btnAutoSim"
+                            class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs border border-slate-700 transition">
+                            ⏯️ เล่นอัตโนมัติ
+                        </button>
+                    </div>
+
+                    <!-- Dynamic Environmental Sliders -->
+                    <div class="flex flex-wrap items-center gap-4 text-xs">
+                        <div class="flex items-center gap-2">
+                            <label for="sliderSun" class="text-slate-400">☀️ มุมเงาแดด:</label>
+                            <input type="range" id="sliderSun" min="0" max="100" value="45"
+                                class="w-24 accent-amber-500 cursor-pointer">
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <label for="sliderFog" class="text-slate-400">🌫️ หมอกแม่น้ำ:</label>
+                            <input type="range" id="sliderFog" min="10" max="90" value="40"
+                                class="w-24 accent-cyan-500 cursor-pointer">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Explanation Banner -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
+                <div class="p-2.5 rounded-xl bg-slate-900/80 border border-slate-800 flex items-start gap-2">
+                    <span class="text-amber-400 text-base">📐</span>
+                    <div>
+                        <span class="font-bold text-slate-200">64 กองหินแบบฟรักทัล</span>
+                        <p class="text-slate-400 text-[11px] leading-relaxed">แตกแขนงจาก 8 ประตูหลัก
+                            ซ่อนทางตันไว้ในเงาหักเห</p>
+                    </div>
+                </div>
+                <div class="p-2.5 rounded-xl bg-slate-900/80 border border-slate-800 flex items-start gap-2">
+                    <span class="text-cyan-400 text-base">🌬️</span>
+                    <div>
+                        <span class="font-bold text-slate-200">กลศาสตร์เวนทูรี (Venturi)</span>
+                        <p class="text-slate-400 text-[11px] leading-relaxed">ช่องแคบเร่งลมแม่น้ำ
+                            สร้างเสียงคำรามและฝุ่นทรายคลุมทิศ</p>
+                    </div>
+                </div>
+                <div class="p-2.5 rounded-xl bg-slate-900/80 border border-slate-800 flex items-start gap-2">
+                    <span class="text-red-400 text-base">🎯</span>
+                    <div>
+                        <span class="font-bold text-slate-200">กับดักสมอง (Cognitive Trap)</span>
+                        <p class="text-slate-400 text-[11px] leading-relaxed">สัญชาตญาณหนีตายจะพาคนวิ่งหาที่กว้าง
+                            ซึ่งเป็นจุดซุ่มโจมตี</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <aside class="lg:col-span-4 flex flex-col gap-3">
+
+            <!-- 8 GATES TACTICAL EXPLORER -->
+            <div class="bg-slate-900/90 rounded-2xl border border-slate-800 p-4 shadow-xl flex flex-col">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-2 mb-3">
+                    <h2 class="text-sm font-bold text-amber-400 flex items-center gap-1.5">
+                        <span>⛩️ สำรวจ 8 ประตูค่ายกล</span>
+                    </h2>
+                    <span class="text-[10px] text-slate-400">คลิกที่ประตูบนแผนผังหรือรายการ</span>
+                </div>
+
+                <!-- 8 Gates Button Matrix -->
+                <div class="grid grid-cols-4 gap-1.5 mb-3 text-center" id="gatesBtnContainer">
+                    <!-- Dynamically populated or rendered buttons -->
+                </div>
+
+                <!-- Selected Gate Detail Card -->
+                <div id="gateDetailCard"
+                    class="p-3.5 rounded-xl bg-slate-950 border border-slate-800 flex flex-col gap-2 transition-all">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <span id="detTrigram" class="text-2xl font-bold font-cinzel text-amber-400">☶</span>
+                            <div>
+                                <div class="text-sm font-bold text-white flex items-center gap-1.5">
+                                    <span id="detName">ประตูแซ (生門)</span>
+                                    <span id="detStatusBadge"
+                                        class="text-[10px] px-1.5 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-800/50">ประตูกำเนิด
+                                        / ทางรอด</span>
+                                </div>
+                                <div class="text-[11px] text-slate-400" id="detDirection">ทิศตะวันออกเฉียงเหนือ
+                                    (เนินดิน)</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-xs text-slate-300 leading-relaxed border-t border-slate-800/80 pt-2"
+                        id="detDescription">
+                        ประตูที่เปิดกว้างและดูไร้การคุกคามที่สุด
+                        ขงเบ้งจงใจเปิดทิ้งไว้เพื่อล่อลวงให้ทัพศัตรูคิดว่าเป็นทางหนี เมื่อหลงก้าวเข้ามา
+                        ทางเดินจะบิดเบี้ยวกลืนเข้าไปในประตูสี่ทันที
+                    </div>
+
+                    <div class="bg-slate-900/90 p-2.5 rounded-lg border border-slate-800 text-[11px] space-y-1">
+                        <div class="text-amber-400 font-semibold flex items-center gap-1">
+                            <span>🧠 กลไกในหัวขงเบ้ง:</span>
+                        </div>
+                        <p class="text-slate-300" id="detMindMechanism">
+                            "มนุษย์กลัวความมืด จะวิ่งเข้าหาแสงสว่าง ข้าจงใจเปิดประตูนี้รับแดดยามเช้า
+                            เพื่อต้อนเหยื่อเข้าสู่กรงขัง"
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-slate-900/90 rounded-2xl border border-slate-800 p-4 shadow-xl flex-1 flex flex-col">
+                <h2
+                    class="text-sm font-bold text-slate-200 border-b border-slate-800 pb-2 mb-3 flex items-center justify-between">
+                    <span>ถอดรหัสความคิด 4 ลำดับขั้น</span>
+                    <span class="text-[10px] text-amber-500 font-normal">Reverse Engineered</span>
+                </h2>
+
+                <!-- Accordion / Step Hierarchy -->
+                <div class="space-y-2 text-xs flex-1 overflow-y-auto pr-1">
+
+                    <div
+                        class="p-2.5 rounded-xl bg-slate-950 border border-slate-800/80 hover:border-amber-500/40 transition">
+                        <div class="font-bold text-amber-400 flex items-center justify-between mb-1">
+                            <span>1. เลขกลอี้จิง (Matrix Fractal)</span>
+                            <span class="text-[10px] text-slate-500">64 กองหิน</span>
+                        </div>
+                        <p class="text-slate-400 text-[11px] leading-relaxed">
+                            มองแม่น้ำเป็นตารางหมากรุก 8x8 แต่ละช่องคือหน่วยรบที่ไม่มีชีวิต
+                            แต่มีพิกัดตายตัวตามสัญลักษณ์ฟ้า ดิน น้ำ ไฟ ภูเขา ลม สายฟ้า หนองน้ำ
+                        </p>
+                    </div>
+
+                    <div
+                        class="p-2.5 rounded-xl bg-slate-950 border border-slate-800/80 hover:border-amber-500/40 transition">
+                        <div class="font-bold text-cyan-400 flex items-center justify-between mb-1">
+                            <span>2. กลไกเวลา & เงาแดด (Shadow Shift)</span>
+                            <span class="text-[10px] text-slate-500">Optical Camouflage</span>
+                        </div>
+                        <p class="text-slate-400 text-[11px] leading-relaxed">
+                            เสาหินถูกสกัดมุมเอียง 35-50 องศา เมื่อดวงอาทิตย์เปลี่ยนตำแหน่ง เงาจะทอดมาบรรจบกัน
+                            ปิดทางที่เคยเปิด และเปิดช่องตันให้ดูเหมือนทางรอด
+                        </p>
+                    </div>
+
+                    <div
+                        class="p-2.5 rounded-xl bg-slate-950 border border-slate-800/80 hover:border-amber-500/40 transition">
+                        <div class="font-bold text-red-400 flex items-center justify-between mb-1">
+                            <span>3. อะคูสติก & ไอน้ำ (Sensory Jamming)</span>
+                            <span class="text-[10px] text-slate-500">Sound Waves</span>
+                        </div>
+                        <p class="text-slate-400 text-[11px] leading-relaxed">
+                            เสียงน้ำเชี่ยวของแยงซีเกียงสะท้อนก้องในซอกหิน เกิดคลื่นเสียงต่ำรบกวนหูชั้นใน
+                            ทำให้เสียสมดุลการทรงตัว เกิดภาพหลอนเห็นก้อนหินขยับได้
+                        </p>
+                    </div>
+
+                    <div
+                        class="p-2.5 rounded-xl bg-slate-950 border border-slate-800/80 hover:border-amber-500/40 transition">
+                        <div class="font-bold text-emerald-400 flex items-center justify-between mb-1">
+                            <span>4. ตรรกะหมากรุก (Lu Xun Trap Route)</span>
+                            <span class="text-[10px] text-slate-500">Game Theory</span>
+                        </div>
+                        <p class="text-slate-400 text-[11px] leading-relaxed">
+                            ขงเบ้งรู้ว่าลู่ซุนมั่นใจในความฉลาดของตัวเอง จึงสร้างค่ายกลที่ "ยิ่งใช้ตรรกะหาเหตุผล
+                            ยิ่งเดินหลงลึก" จนพ่อตาฮึงเซ็กอ๋องต้องมาช่วยนำทางออก
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </aside>
+
+    </main>
+
+    <script>
+        const GATES_DATA = [
+            {
+                id: 'sheng',
+                name: 'ประตูแซ (生門)',
+                nameShort: 'แซ (เกิด)',
+                chinese: '生門',
+                trigram: '☶',
+                trigramName: 'เกิน (ภูเขา)',
+                dirName: 'ตะวันออกเฉียงเหนือ',
+                angle: 45, // degrees
+                type: 'auspicious',
+                statusDesc: 'มงคลสูงสุด (ล่อเข้า)',
+                desc: 'ประตูแห่งชีวิตและการเริ่มต้น มีทางเปิดกว้างที่สุด เป็นประตูที่ขงเบ้งจงใจเปิดไว้เพื่อล่อลวงให้ลู่ซุนเดินเข้ามาติดกับดัก',
+                mechanism: 'ขงเบ้งใช้กฎดึงดูดของธรรมชาติ มนุษย์จะเลือกทางที่กว้างและสว่างเสมอเมื่อเผชิญสิ่งแปลกปลอม',
+                color: '#10b981'
+            },
+            {
+                id: 'shang',
+                name: 'ประตูสอง (傷門)',
+                nameShort: 'สอง (เจ็บ)',
+                chinese: '傷門',
+                trigram: '☳',
+                trigramName: 'เจิ้น (สายฟ้า)',
+                dirName: 'ทิศตะวันออก',
+                angle: 90,
+                type: 'danger',
+                statusDesc: 'อัปมงคล (บาดเจ็บ/ขวากหนาม)',
+                desc: 'เต็มไปด้วยแนวหินแหลมคมและทางแยกซิกแซก บังคับให้ขบวนม้าศึกสะดุดล้มและสูญเสียอาวุธ',
+                mechanism: 'ออกแบบซอกหินให้แคบลงกะทันหัน ทำให้ม้าศึกเบียดกันเองจนตื่นกลัว',
+                color: '#f97316'
+            },
+            {
+                id: 'du',
+                name: 'ประตูตู้ (杜門)',
+                nameShort: 'ตู้ (ซ่อน/อุด)',
+                chinese: '杜門',
+                trigram: '☴',
+                trigramName: 'ซุ่น (ลม)',
+                dirName: 'ตะวันออกเฉียงใต้',
+                angle: 135,
+                type: 'neutral',
+                statusDesc: 'ปิดซ่อน / ทางตันลวงตา',
+                desc: 'ประตูแห่งความเร้นลับ แนวหินปิดกั้นสายตา หมอกลงจัดที่สุด มองไม่เห็นสิ่งที่อยู่เบื้องหลัง',
+                mechanism: 'ช่องหินขนานกับทิศทางหมอกแม่น้ำ ดักจับไอน้ำให้ลอยอวลอยู่กับที่ บังทัศนวิสัย 100%',
+                color: '#64748b'
+            },
+            {
+                id: 'jing',
+                name: 'ประตูเก็ง (景門)',
+                nameShort: 'เก็ง (สว่าง/ภาพลวง)',
+                chinese: '景門',
+                trigram: '☲',
+                trigramName: 'หลี่ (ไฟ)',
+                dirName: 'ทิศใต้',
+                angle: 180,
+                type: 'neutral',
+                statusDesc: 'ภาพลวงตา / แสงสะท้อน',
+                desc: 'แสงแดดตกกระทบผิวน้ำแม่น้ำแยงซีแล้วสะท้อนเข้าสู่ผนังหินสีขาว เกิดภาพลวงตาเสมือนมีกองทัพซุ่มอยู่',
+                mechanism: 'ใช้หลักกระจกสะท้อนแสงอาทิตย์ หินขัดเรียบสะท้อนแสงวาบทำให้ตามัวชั่วขณะ',
+                color: '#eab308'
+            },
+            {
+                id: 'si',
+                name: 'ประตูสี่ (死門)',
+                nameShort: 'สี่ (ตาย)',
+                chinese: '死門',
+                trigram: '☷',
+                trigramName: 'คุน (ดิน)',
+                dirName: 'ตะวันตกเฉียงใต้',
+                angle: 225,
+                type: 'deadly',
+                statusDesc: 'มรณะ / หลุมดำไร้ทางออก',
+                desc: 'จุดศูนย์รวมของความสิ้นหวัง กำแพงหินสูงล้อมรอบ 3 ด้าน ทางเข้าจะถูกเงาพาดทับจนเหมือนปิดสนิท',
+                mechanism: 'ออกแบบเป็นรูปคอขวด (Bottle Neck) เมื่อเข้ามาแล้วจะหันหลังกลับไม่ได้เพราะติดทหารพวกเดียวกันเอง',
+                color: '#ef4444'
+            },
+            {
+                id: 'jing_shock',
+                name: 'ประตูเกีย (驚門)',
+                nameShort: 'เกีย (ตระหนก)',
+                chinese: '驚門',
+                trigram: '☱',
+                trigramName: 'ตุ้ย (หนองน้ำ)',
+                dirName: 'ทิศตะวันตก',
+                angle: 270,
+                type: 'danger',
+                statusDesc: 'ตื่นตระหนก / เสียงหวีดหวิว',
+                desc: 'ช่องลมเวนทูรี (Venturi Tunnel) บีบลมแม่น้ำให้พุ่งผ่านด้วยความเร็วสูง ก่อกำเนิดเสียงโหยหวนเหมือนเสียงวิญญาณ',
+                mechanism: 'โจมตีระบบประสาทส่วนกลางด้วยคลื่นเสียงลมหวีดหวิว ทำให้ม้าศึกคลั่งและทหารไม่ฟังกัปตัน',
+                color: '#ec4899'
+            },
+            {
+                id: 'kai',
+                name: 'ประตูไค (開門)',
+                nameShort: 'ไค (เปิด)',
+                chinese: '開門',
+                trigram: '☰',
+                trigramName: 'ก้าน (ฟ้า)',
+                dirName: 'ตะวันตกเฉียงเหนือ',
+                angle: 315,
+                type: 'auspicious',
+                statusDesc: 'เปิดโล่ง / ทางออกจริง',
+                desc: 'ประตูเชื่อมต่อสู่แม่น้ำกว้างใหญ่ มีช่องลมเปิดให้อากาศถ่ายเท เป็นทางรอดที่พ่อตาขงเบ้งใช้พาลู่ซุนออก',
+                mechanism: 'จุดที่ทิศทางลมพัดเป่าหมอกให้จางหายตลอดเวลา เปิดทางให้เห็นแสงสว่างและดวงดาวนำทาง',
+                color: '#38bdf8'
+            },
+            {
+                id: 'xiu',
+                name: 'ประตูซิว (休門)',
+                nameShort: 'ซิว (พัก)',
+                chinese: '休門',
+                trigram: '☵',
+                trigramName: 'คัม (น้ำ)',
+                dirName: 'ทิศเหนือ',
+                angle: 0,
+                type: 'auspicious',
+                statusDesc: 'สงบระงับ / คืนพลัง',
+                desc: 'บริเวณจุดพักติดผืนน้ำสงบ ไร้ลมกรรโชก เหมาะแก่การตั้งสติ แต่ถูกพรางไว้ด้วยแนวโขดหินเตี้ย',
+                mechanism: 'ซ่อนอยู่หลังแนวต้านกระแสน้ำ คลื่นน้ำนิ่งทำให้ไร้เสียงสะท้อน',
+                color: '#6366f1'
+            }
+        ];
+
+        const state = {
+            viewMode: 'mind', // 'mind', 'tactical', 'luxun'
+            sunAngle: 45, // degrees 0-180
+            fogDensity: 0.4,
+            selectedGate: GATES_DATA[0],
+            luXunStepIndex: 0,
+            isPlayingAuto: false,
+            audioEnabled: false,
+            // Steps in simulation storyline
+            steps: [
+                {
+                    title: "1. หน้าด่านกัวอี้ปิง (ริมนทีแยงซี)",
+                    thought: "\"เล่าปี่พ่ายแพ้แตกกระเจิงหนีไปแล้ว ขงเบ้งเพียงทิ้งกองหินไว้ถ่วงเวลา จะมีพิษสงอะไร?\"",
+                    gateId: 'sheng',
+                    panic: 5,
+                    coordRatio: { x: 0.5, y: 0.92 } // outside Sheng gate
+                },
+                {
+                    title: "2. เดินทัพเข้า 'ประตูแซ' (ประตูเกิด)",
+                    thought: "\"ทางกว้าง ลมพัดสบาย... หึ ค่ายกลนี้มิเห็นมีอะไรน่ากลัว เดินทัพต่อไป!\"",
+                    gateId: 'sheng',
+                    panic: 15,
+                    coordRatio: { x: 0.65, y: 0.72 }
+                },
+                {
+                    title: "3. แสงแดดเปลี่ยนมุม เกิดเงาลวงตา",
+                    thought: "\"เอ๊ะ! เหตุใดทางที่เพิ่งผ่านมาจึงกลายเป็นผาหินทึบ? ดวงตะวันเคลื่อน หรือฟ้าดินแปรปรวน?\"",
+                    gateId: 'shang',
+                    panic: 38,
+                    coordRatio: { x: 0.75, y: 0.5 }
+                },
+                {
+                    title: "4. พลัดเข้าสู่ 'ประตูเกีย' (ประตูตระหนก)",
+                    thought: "\"เสียงคลื่นแม่น้ำหรือเสียงภูตผีโห่ร้องรอบทิศ!? ม้าศึกไม่ยอมก้าวเดิน ทหารขวัญกระเจิงหมดแล้ว!\"",
+                    gateId: 'jing_shock',
+                    panic: 72,
+                    coordRatio: { x: 0.35, y: 0.45 }
+                },
+                {
+                    title: "5. ถลำลึกติดตายที่ 'ประตูสี่' (ประตูมรณะ)",
+                    thought: "\"แย่แล้ว! หมอกควันทึบ หินทุกก้อนดูเหมือนมีชีวิตล้อมเราไว้... ข้าลู่ซุนต้องมาตายที่นี่หรือ!?\"",
+                    gateId: 'si',
+                    panic: 96,
+                    coordRatio: { x: 0.4, y: 0.65 }
+                },
+                {
+                    title: "6. ฮึงเซ็กอ๋อง (พ่อตาขงเบ้ง) ปรากฏกายชี้นำ",
+                    thought: "\"ท่านผู้เฒ่าผู้นี้เป็นใครกัน? ท่านกำลังนำเราไปทาง 'ประตูไค' หมอกเริ่มจางลงแล้ว! รอดตายแล้ว!\"",
+                    gateId: 'kai',
+                    panic: 25,
+                    coordRatio: { x: 0.3, y: 0.28 }
+                },
+                {
+                    title: "7. หลุดพ้นค่ายกล สั่งถอยทัพกลับง่อก๊ก",
+                    thought: "\"ขงเบ้งหยั่งรู้ดินฟ้าปานเทวดา หากข้าดึงดันบุกต่อ คงไม่อาจรักษาชีวิตกลับกังตั๋งได้อีก... ถอยทัพ!\"",
+                    gateId: 'kai',
+                    panic: 0,
+                    coordRatio: { x: 0.15, y: 0.15 }
+                }
+            ]
+        };
+
+        let audioCtx = null;
+        let windGain = null;
+        let drumOsc = null;
+
+        function initAudio() {
+            if (audioCtx) return;
+            try {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                audioCtx = new AudioContext();
+
+                // Ambient Wind Synthesizer (Filtered White Noise)
+                const bufferSize = audioCtx.sampleRate * 2;
+                const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+                const output = noiseBuffer.getChannelData(0);
+                for (let i = 0; i < bufferSize; i++) {
+                    output[i] = Math.random() * 2 - 1;
+                }
+
+                const whiteNoise = audioCtx.createBufferSource();
+                whiteNoise.buffer = noiseBuffer;
+                whiteNoise.loop = true;
+
+                const filter = audioCtx.createBiquadFilter();
+                filter.type = 'bandpass';
+                filter.frequency.value = 380;
+                filter.Q.value = 3.0;
+
+                windGain = audioCtx.createGain();
+                windGain.gain.value = 0.05;
+
+                whiteNoise.connect(filter);
+                filter.connect(windGain);
+                windGain.connect(audioCtx.destination);
+                whiteNoise.start();
+
+            } catch (e) {
+                console.warn("Audio synthesis not allowed without interaction", e);
+            }
+        }
+
+        function triggerWarDrum(frequency = 75) {
+            if (!audioCtx || !state.audioEnabled) return;
+            try {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(frequency, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(30, audioCtx.currentTime + 0.35);
+
+                gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.35);
+
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.4);
+            } catch (err) { }
+        }
+
+        const STONES = [];
+        function generateStoneLayout() {
+            STONES.length = 0;
+            const totalRings = 4;
+            const stonesPerRing = 16; // 4 rings * 16 = 64 stones!
+
+            for (let r = 1; r <= totalRings; r++) {
+                const radius = 60 + r * 38; // px from center
+                for (let i = 0; i < stonesPerRing; i++) {
+                    const angle = (i / stonesPerRing) * Math.PI * 2 + (r % 2 === 0 ? 0.1 : -0.1);
+                    // slight procedural jitter for natural rock appearance
+                    const jitterX = Math.sin(i * 3 + r) * 4;
+                    const jitterY = Math.cos(i * 2 + r) * 4;
+
+                    STONES.push({
+                        ring: r,
+                        index: i,
+                        baseRadius: radius,
+                        angle: angle,
+                        width: 9 + (r * 1.5) + (i % 3) * 2,
+                        height: 12 + (r * 2.5),
+                        jitterX,
+                        jitterY,
+                        elevation: 14 + (i % 4) * 5
+                    });
+                }
+            }
+        }
+        generateStoneLayout();
+
+        const canvas = document.getElementById('mazeCanvas');
+        const ctx = canvas.getContext('2d');
+        let width = 0;
+        let height = 0;
+        let centerX = 0;
+        let centerY = 0;
+
+        function resizeCanvas() {
+            const rect = canvas.parentElement.getBoundingClientRect();
+            width = rect.width;
+            height = rect.height || 520;
+            canvas.width = width * window.devicePixelRatio;
+            canvas.height = height * window.devicePixelRatio;
+            ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+            centerX = width / 2;
+            centerY = height / 2;
+        }
+        window.addEventListener('resize', () => {
+            resizeCanvas();
+            draw();
+        });
+
+        const particles = [];
+        for (let p = 0; p < 50; p++) {
+            particles.push({
+                x: Math.random() * 800,
+                y: Math.random() * 600,
+                speed: 0.8 + Math.random() * 1.5,
+                size: 20 + Math.random() * 40,
+                opacity: 0.1 + Math.random() * 0.2
+            });
+        }
+
+        let animationFrameId = null;
+        let tick = 0;
+
+        function draw() {
+            tick += 0.02;
+            ctx.clearRect(0, 0, width, height);
+
+            // 1. Draw River Water & Ground Background (หาดหิน & แม่น้ำแยงซีเกียง)
+            drawBackgroundTerrain();
+
+            // 2. Draw Bagua Grid & Vectors depending on Mode
+            if (state.viewMode === 'mind') {
+                drawZhugeMindMatrix();
+            } else if (state.viewMode === 'tactical') {
+                drawTacticalOverlay();
+            } else if (state.viewMode === 'luxun') {
+                drawLuXunDisorientationView();
+            }
+
+            // 3. Draw 64 Stone Pillars with Dynamic Shadows
+            drawStonesAndShadows();
+
+            // 4. Draw 8 Gates Portals and Tags
+            drawEightGates();
+
+            // 5. Draw Lu Xun's Expeditionary Unit
+            drawLuXunUnit();
+
+            // 6. Draw River Mist & Dust Clouds
+            drawAtmosphere();
+
+            animationFrameId = requestAnimationFrame(draw);
+        }
+
+        function drawBackgroundTerrain() {
+            // River gradient on bottom-right (Yangtze River)
+            const riverGrad = ctx.createLinearGradient(0, 0, width, height);
+            riverGrad.addColorStop(0, '#0a101d');
+            riverGrad.addColorStop(0.5, '#0e172a');
+            riverGrad.addColorStop(1, '#091e3a');
+            ctx.fillStyle = riverGrad;
+            ctx.fillRect(0, 0, width, height);
+
+            // River flow lines
+            ctx.save();
+            ctx.strokeStyle = 'rgba(56, 189, 248, 0.06)';
+            ctx.lineWidth = 1.5;
+            for (let i = 0; i < 6; i++) {
+                ctx.beginPath();
+                const yBase = height * 0.7 + i * 25;
+                ctx.moveTo(0, yBase + Math.sin(tick + i) * 10);
+                for (let x = 0; x < width; x += 40) {
+                    ctx.lineTo(x, yBase + Math.sin(tick + x * 0.01 + i) * 8);
+                }
+                ctx.stroke();
+            }
+            ctx.restore();
+
+            // Concentric ancient Bagua stone floor ripples
+            ctx.save();
+            ctx.strokeStyle = 'rgba(217, 119, 6, 0.08)';
+            ctx.lineWidth = 1;
+            for (let r = 50; r <= 220; r += 45) {
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, r, 0, Math.PI * 2);
+                ctx.stroke();
+            }
+            ctx.restore();
+        }
+
+        function drawZhugeMindMatrix() {
+            ctx.save();
+
+            // Mathematical polar grid lines
+            ctx.strokeStyle = 'rgba(245, 158, 11, 0.18)';
+            ctx.lineWidth = 1;
+            ctx.setLineDash([4, 4]);
+
+            for (let i = 0; i < 8; i++) {
+                const rad = (i * Math.PI) / 4;
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.lineTo(centerX + Math.cos(rad) * 260, centerY + Math.sin(rad) * 260);
+                ctx.stroke();
+            }
+            ctx.setLineDash([]);
+
+            // Algorithmic Flow Vectors: Spiral Black Hole Trapping effect
+            ctx.lineWidth = 2;
+            const spiralCount = 3;
+            for (let s = 0; s < spiralCount; s++) {
+                ctx.beginPath();
+                const offset = s * ((Math.PI * 2) / spiralCount) + tick * 0.3;
+                for (let a = 0; a < Math.PI * 3; a += 0.15) {
+                    const r = 240 - a * 20;
+                    if (r < 20) break;
+                    const currentAngle = a + offset;
+                    const px = centerX + Math.cos(currentAngle) * r;
+                    const py = centerY + Math.sin(currentAngle) * r;
+                    if (a === 0) ctx.moveTo(px, py);
+                    else ctx.lineTo(px, py);
+                }
+                ctx.strokeStyle = 'rgba(239, 68, 68, 0.25)';
+                ctx.stroke();
+            }
+
+            // Zhuge Liang's Central Core Command (ศูนย์กลางค่ายกล - กองทัพจงจวิน)
+            const pulse = 18 + Math.sin(tick * 3) * 3;
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, pulse, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(217, 119, 6, 0.2)';
+            ctx.fill();
+            ctx.strokeStyle = '#f59e0b';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Yin-Yang icon in center
+            ctx.fillStyle = '#fef3c7';
+            ctx.font = '16px serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('☯', centerX, centerY);
+
+            // Algorithmic Decision Nodes (Visual Logic Nodes)
+            ctx.font = '10px Sarabun';
+            ctx.fillStyle = '#f59e0b';
+            ctx.fillText('CORE: THOUGHT ANCHOR (ดาวเหนือ)', centerX, centerY - 28);
+
+            ctx.restore();
+        }
+
+        function drawTacticalOverlay() {
+            ctx.save();
+            // Octagonal boundaries
+            ctx.beginPath();
+            for (let i = 0; i < 8; i++) {
+                const rad = (i * Math.PI) / 4;
+                const x = centerX + Math.cos(rad) * 230;
+                const y = centerY + Math.sin(rad) * 230;
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.closePath();
+            ctx.strokeStyle = 'rgba(16, 185, 129, 0.35)';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            ctx.fillStyle = 'rgba(16, 185, 129, 0.03)';
+            ctx.fill();
+
+            // Wind Vector Arrows along the river
+            ctx.strokeStyle = 'rgba(56, 189, 248, 0.4)';
+            ctx.fillStyle = 'rgba(56, 189, 248, 0.7)';
+            ctx.lineWidth = 1.5;
+            for (let i = -2; i <= 2; i++) {
+                const ax = centerX + i * 70;
+                const ay = height * 0.88;
+                ctx.beginPath();
+                ctx.moveTo(ax, ay);
+                ctx.lineTo(ax + 30, ay - 15);
+                ctx.stroke();
+                // Arrow head
+                ctx.beginPath();
+                ctx.arc(ax + 30, ay - 15, 3, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            ctx.font = '11px Sarabun';
+            ctx.fillText('กระแสลมแม่น้ำแยงซี (Venturi Inflow)', centerX, height * 0.94);
+            ctx.restore();
+        }
+
+        function drawLuXunDisorientationView() {
+            ctx.save();
+            // Heavy vignette and shifting mirages
+            const grad = ctx.createRadialGradient(centerX, centerY, 40, centerX, centerY, 280);
+            grad.addColorStop(0, 'transparent');
+            grad.addColorStop(0.6, 'rgba(15, 23, 42, 0.7)');
+            grad.addColorStop(1, 'rgba(185, 28, 28, 0.35)');
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, width, height);
+
+            // Hallucinatory floating characters
+            const hallucinations = ['迷', '驚', '死', '幻', '魂', '陣'];
+            ctx.font = '18px serif';
+            ctx.fillStyle = 'rgba(239, 68, 68, 0.2)';
+            for (let i = 0; i < hallucinations.length; i++) {
+                const angle = tick * 0.5 + (i * Math.PI) / 3;
+                const dist = 120 + Math.sin(tick + i) * 30;
+                ctx.fillText(hallucinations[i], centerX + Math.cos(angle) * dist, centerY + Math.sin(angle) * dist);
+            }
+            ctx.restore();
+        }
+
+        function drawStonesAndShadows() {
+            // Calculate light vector from Sun Angle slider
+            const sunRad = (state.sunAngle * Math.PI) / 180;
+            const sunDirX = Math.cos(sunRad);
+            const sunDirY = Math.sin(sunRad);
+            const shadowLength = 1.4 + (1 - Math.sin(sunRad)) * 1.8;
+
+            ctx.save();
+
+            // Pass 1: Render All Shadows First
+            STONES.forEach(stone => {
+                const sx = centerX + Math.cos(stone.angle) * stone.baseRadius + stone.jitterX;
+                const sy = centerY + Math.sin(stone.angle) * stone.baseRadius + stone.jitterY;
+                const shX = sx + sunDirX * (stone.elevation * shadowLength);
+                const shY = sy + sunDirY * (stone.elevation * shadowLength);
+
+                // Shadow polygon
+                ctx.beginPath();
+                ctx.moveTo(sx - stone.width / 2, sy);
+                ctx.lineTo(sx + stone.width / 2, sy);
+                ctx.lineTo(shX + stone.width * 0.4, shY);
+                ctx.lineTo(shX - stone.width * 0.4, shY);
+                ctx.closePath();
+                ctx.fillStyle = 'rgba(3, 7, 18, 0.65)';
+                ctx.fill();
+            });
+
+            // Pass 2: Render Stone Pillars
+            STONES.forEach((stone, idx) => {
+                const sx = centerX + Math.cos(stone.angle) * stone.baseRadius + stone.jitterX;
+                const sy = centerY + Math.sin(stone.angle) * stone.baseRadius + stone.jitterY;
+
+                // Rock 3D Pillar shape
+                ctx.beginPath();
+                ctx.rect(sx - stone.width / 2, sy - stone.height, stone.width, stone.height);
+
+                // Sunlight highlights on one side, shadow on other
+                const stoneGrad = ctx.createLinearGradient(sx - stone.width / 2, sy, sx + stone.width / 2, sy);
+                stoneGrad.addColorStop(0, '#64748b');
+                stoneGrad.addColorStop(0.5, '#475569');
+                stoneGrad.addColorStop(1, '#1e293b');
+                ctx.fillStyle = stoneGrad;
+                ctx.fill();
+
+                // Stone top cap (lit surface)
+                ctx.beginPath();
+                ctx.ellipse(sx, sy - stone.height, stone.width / 2, 4, 0, 0, Math.PI * 2);
+                ctx.fillStyle = '#94a3b8';
+                ctx.fill();
+                ctx.strokeStyle = '#334155';
+                ctx.lineWidth = 0.8;
+                ctx.stroke();
+
+                // Highlight selected gate stones
+                if (state.selectedGate) {
+                    const gateAngleRad = (state.selectedGate.angle * Math.PI) / 180;
+                    const diff = Math.abs(Math.atan2(Math.sin(stone.angle - gateAngleRad), Math.cos(stone.angle - gateAngleRad)));
+                    if (diff < 0.35) {
+                        ctx.strokeStyle = state.selectedGate.color;
+                        ctx.lineWidth = 1.5;
+                        ctx.strokeRect(sx - stone.width / 2 - 2, sy - stone.height - 2, stone.width + 4, stone.height + 4);
+                    }
+                }
+            });
+
+            ctx.restore();
+        }
+
+        function drawEightGates() {
+            const radius = Math.min(width, height) * 0.44;
+            ctx.save();
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+
+            GATES_DATA.forEach(gate => {
+                const rad = (gate.angle * Math.PI) / 180;
+                const gx = centerX + Math.cos(rad) * radius;
+                const gy = centerY + Math.sin(rad) * radius;
+                const isSelected = state.selectedGate && state.selectedGate.id === gate.id;
+
+                // Portal Marker Circle
+                ctx.beginPath();
+                ctx.arc(gx, gy, isSelected ? 22 : 18, 0, Math.PI * 2);
+                ctx.fillStyle = isSelected ? `${gate.color}33` : '#0f172aee';
+                ctx.fill();
+                ctx.strokeStyle = isSelected ? gate.color : 'rgba(148, 163, 184, 0.4)';
+                ctx.lineWidth = isSelected ? 2.5 : 1.2;
+                ctx.stroke();
+
+                // Chinese Trigram symbol
+                ctx.font = '14px serif';
+                ctx.fillStyle = isSelected ? '#ffffff' : '#cbd5e1';
+                ctx.fillText(gate.trigram, gx, gy - 5);
+
+                // Gate Name
+                ctx.font = 'bold 10px Sarabun';
+                ctx.fillStyle = gate.color;
+                ctx.fillText(gate.nameShort, gx, gy + 8);
+
+                // Vector line from Gate to Center (subtle hint)
+                if (isSelected) {
+                    ctx.beginPath();
+                    ctx.moveTo(gx, gy);
+                    ctx.lineTo(centerX, centerY);
+                    ctx.strokeStyle = `${gate.color}55`;
+                    ctx.lineWidth = 1.5;
+                    ctx.setLineDash([3, 5]);
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+                }
+            });
+
+            ctx.restore();
+        }
+
+        function drawLuXunUnit() {
+            const currentStep = state.steps[state.luXunStepIndex];
+            if (!currentStep) return;
+
+            const unitX = currentStep.coordRatio.x * width;
+            const unitY = currentStep.coordRatio.y * height;
+
+            ctx.save();
+
+            // Trail of previous steps
+            ctx.beginPath();
+            ctx.strokeStyle = 'rgba(239, 68, 68, 0.4)';
+            ctx.lineWidth = 2.5;
+            ctx.setLineDash([4, 4]);
+            for (let s = 0; s <= state.luXunStepIndex; s++) {
+                const tx = state.steps[s].coordRatio.x * width;
+                const ty = state.steps[s].coordRatio.y * height;
+                if (s === 0) ctx.moveTo(tx, ty);
+                else ctx.lineTo(tx, ty);
+            }
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // Lu Xun Unit Avatar (Cavalry / General)
+            // Pulsing threat aura
+            const auraSize = 18 + Math.sin(tick * 4) * 4;
+            ctx.beginPath();
+            ctx.arc(unitX, unitY, auraSize, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(220, 38, 38, 0.25)';
+            ctx.fill();
+
+            // Main Token
+            ctx.beginPath();
+            ctx.arc(unitX, unitY, 14, 0, Math.PI * 2);
+            ctx.fillStyle = '#dc2626';
+            ctx.fill();
+            ctx.strokeStyle = '#fef08a';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Inner Horse / Flag icon
+            ctx.font = '12px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillStyle = '#ffffff';
+            ctx.fillText('🐎', unitX, unitY);
+
+            // Name Tag & Banner
+            ctx.font = 'bold 11px Sarabun';
+            ctx.fillStyle = '#fef08a';
+            ctx.fillText('ทัพลู่ซุน (ง่อก๊ก)', unitX, unitY - 22);
+
+            ctx.restore();
+        }
+
+        function drawAtmosphere() {
+            ctx.save();
+            const fogAlpha = state.fogDensity * 0.25;
+
+            particles.forEach(p => {
+                p.x += p.speed;
+                if (p.x > width + 50) p.x = -50;
+
+                const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size);
+                grad.addColorStop(0, `rgba(226, 232, 240, ${fogAlpha})`);
+                grad.addColorStop(1, 'transparent');
+
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fillStyle = grad;
+                ctx.fill();
+            });
+            ctx.restore();
+        }
+
+        // Populate Gate Buttons in the right sidebar
+        const gatesBtnContainer = document.getElementById('gatesBtnContainer');
+        GATES_DATA.forEach(gate => {
+            const btn = document.createElement('button');
+            btn.className = `p-1.5 rounded-lg border text-xs flex flex-col items-center justify-center transition-all bg-slate-950/70 border-slate-800 hover:border-amber-500/60`;
+            btn.dataset.id = gate.id;
+            btn.innerHTML = `
+        <span class="text-sm font-cinzel font-bold text-amber-400">${gate.trigram}</span>
+        <span class="text-[10px] font-semibold text-slate-300 mt-0.5">${gate.chinese}</span>
+      `;
+            btn.addEventListener('click', () => {
+                selectGate(gate);
+            });
+            gatesBtnContainer.appendChild(btn);
+        });
+
+        function selectGate(gate) {
+            state.selectedGate = gate;
+            triggerWarDrum(120);
+
+            // Update Detail Card
+            document.getElementById('detTrigram').textContent = gate.trigram;
+            document.getElementById('detName').textContent = gate.name;
+            document.getElementById('detDirection').textContent = `${gate.dirName} (${gate.trigramName})`;
+            document.getElementById('detDescription').textContent = gate.desc;
+            document.getElementById('detMindMechanism').textContent = `"${gate.mechanism}"`;
+
+            const badge = document.getElementById('detStatusBadge');
+            badge.textContent = gate.statusDesc;
+            if (gate.type === 'auspicious') {
+                badge.className = 'text-[10px] px-1.5 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-800/50';
+            } else if (gate.type === 'deadly') {
+                badge.className = 'text-[10px] px-1.5 py-0.5 rounded bg-red-950 text-red-300 border border-red-800/50';
+            } else {
+                badge.className = 'text-[10px] px-1.5 py-0.5 rounded bg-amber-950 text-amber-300 border border-amber-800/50';
+            }
+
+            // Highlight active button
+            document.querySelectorAll('#gatesBtnContainer button').forEach(b => {
+                if (b.dataset.id === gate.id) {
+                    b.classList.add('border-amber-500', 'bg-amber-950/40');
+                } else {
+                    b.classList.remove('border-amber-500', 'bg-amber-950/40');
+                }
+            });
+        }
+
+        // Step Lu Xun Simulation
+        const btnStepLuXun = document.getElementById('btnStepLuXun');
+        const txtLuXunStep = document.getElementById('txtLuXunStep');
+        const txtPanicLevel = document.getElementById('txtPanicLevel');
+        const barPanic = document.getElementById('barPanic');
+        const txtLuXunThought = document.getElementById('txtLuXunThought');
+        const disorientationOverlay = document.getElementById('disorientationOverlay');
+
+        function applySimulationStep(index) {
+            state.luXunStepIndex = index % state.steps.length;
+            const step = state.steps[state.luXunStepIndex];
+
+            txtLuXunStep.textContent = step.title;
+            txtLuXunThought.textContent = step.thought;
+            txtPanicLevel.textContent = `${step.panic}%`;
+            barPanic.style.width = `${step.panic}%`;
+
+            // Panic color shifting
+            if (step.panic > 70) {
+                barPanic.className = 'h-full bg-red-600 transition-all duration-300';
+                txtPanicLevel.className = 'font-bold text-red-400';
+                disorientationOverlay.style.opacity = '0.9';
+                triggerWarDrum(50);
+            } else if (step.panic > 30) {
+                barPanic.className = 'h-full bg-amber-500 transition-all duration-300';
+                txtPanicLevel.className = 'font-bold text-amber-400';
+                disorientationOverlay.style.opacity = '0.4';
+                triggerWarDrum(80);
+            } else {
+                barPanic.className = 'h-full bg-emerald-500 transition-all duration-300';
+                txtPanicLevel.className = 'font-bold text-emerald-400';
+                disorientationOverlay.style.opacity = '0';
+            }
+
+            // Automatically select the corresponding gate
+            const targetGate = GATES_DATA.find(g => g.id === step.gateId);
+            if (targetGate) selectGate(targetGate);
+        }
+
+        btnStepLuXun.addEventListener('click', () => {
+            initAudio();
+            applySimulationStep(state.luXunStepIndex + 1);
+        });
+
+        // Auto Simulation Loop
+        let autoTimer = null;
+        const btnAutoSim = document.getElementById('btnAutoSim');
+        btnAutoSim.addEventListener('click', () => {
+            initAudio();
+            if (state.isPlayingAuto) {
+                clearInterval(autoTimer);
+                state.isPlayingAuto = false;
+                btnAutoSim.innerHTML = '⏯️ เล่นอัตโนมัติ';
+            } else {
+                state.isPlayingAuto = true;
+                btnAutoSim.innerHTML = '⏸️ หยุดชั่วคราว';
+                autoTimer = setInterval(() => {
+                    applySimulationStep(state.luXunStepIndex + 1);
+                }, 3200);
+            }
+        });
+
+        // Reset Simulation
+        document.getElementById('btnResetSimulation').addEventListener('click', () => {
+            if (autoTimer) clearInterval(autoTimer);
+            state.isPlayingAuto = false;
+            btnAutoSim.innerHTML = '⏯️ เล่นอัตโนมัติ';
+            applySimulationStep(0);
+        });
+
+        // View Mode Toggles
+        const btnModeMind = document.getElementById('btnModeMind');
+        const btnModeTactical = document.getElementById('btnModeTactical');
+        const btnModeLuXun = document.getElementById('btnModeLuXun');
+        const canvasStatusText = document.getElementById('canvasStatusText');
+
+        function setViewMode(mode) {
+            state.viewMode = mode;
+            [btnModeMind, btnModeTactical, btnModeLuXun].forEach(b => {
+                b.className = 'px-3 py-1.5 rounded-lg font-medium transition-all text-slate-400 hover:text-white';
+            });
+
+            if (mode === 'mind') {
+                btnModeMind.className = 'px-3 py-1.5 rounded-lg font-medium transition-all bg-amber-600 text-white shadow';
+                canvasStatusText.textContent = 'มุมมอง: อัลกอริทึมสมองขงเบ้ง (Cognitive Matrix)';
+                disorientationOverlay.style.opacity = '0';
+            } else if (mode === 'tactical') {
+                btnModeTactical.className = 'px-3 py-1.5 rounded-lg font-medium transition-all bg-emerald-600 text-white shadow';
+                canvasStatusText.textContent = 'มุมมอง: ผังสนามรบ 8 ทิศ & กระแสลมแม่น้ำแยงซี';
+                disorientationOverlay.style.opacity = '0';
+            } else if (mode === 'luxun') {
+                btnModeLuXun.className = 'px-3 py-1.5 rounded-lg font-medium transition-all bg-red-700 text-white shadow';
+                canvasStatusText.textContent = 'มุมมอง: ม่านหมอกและความกลัวสายตาลู่ซุน';
+                disorientationOverlay.style.opacity = '0.75';
+            }
+        }
+
+        btnModeMind.addEventListener('click', () => setViewMode('mind'));
+        btnModeTactical.addEventListener('click', () => setViewMode('tactical'));
+        btnModeLuXun.addEventListener('click', () => setViewMode('luxun'));
+
+        // Sliders
+        const sliderSun = document.getElementById('sliderSun');
+        const lblSunAngle = document.getElementById('lblSunAngle');
+        sliderSun.addEventListener('input', e => {
+            const val = parseInt(e.target.value);
+            state.sunAngle = (val / 100) * 180;
+            const hour = Math.floor(6 + (val / 100) * 12);
+            lblSunAngle.textContent = `${hour}:00 น. (${Math.round(state.sunAngle)}°)`;
+        });
+
+        const sliderFog = document.getElementById('sliderFog');
+        sliderFog.addEventListener('input', e => {
+            state.fogDensity = parseInt(e.target.value) / 100;
+            if (windGain && state.audioEnabled) {
+                windGain.gain.value = 0.02 + state.fogDensity * 0.08;
+            }
+        });
+
+        // Audio Toggle
+        const btnAudioToggle = document.getElementById('btnAudioToggle');
+        btnAudioToggle.addEventListener('click', () => {
+            initAudio();
+            state.audioEnabled = !state.audioEnabled;
+            if (state.audioEnabled) {
+                if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+                document.getElementById('audioIcon').textContent = '🔊';
+                document.getElementById('audioText').textContent = 'เปิดเสียงอยู่';
+                btnAudioToggle.classList.add('border-amber-500', 'bg-amber-950/30');
+            } else {
+                document.getElementById('audioIcon').textContent = '🔇';
+                document.getElementById('audioText').textContent = 'ปิดเสียง';
+                btnAudioToggle.classList.remove('border-amber-500', 'bg-amber-950/30');
+            }
+        });
+
+        // Canvas click to select gate directly
+        canvas.addEventListener('click', e => {
+            const rect = canvas.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+            const clickY = e.clientY - rect.top;
+
+            const radius = Math.min(width, height) * 0.44;
+            GATES_DATA.forEach(gate => {
+                const rad = (gate.angle * Math.PI) / 180;
+                const gx = centerX + Math.cos(rad) * radius;
+                const gy = centerY + Math.sin(rad) * radius;
+                const dist = Math.hypot(clickX - gx, clickY - gy);
+                if (dist < 28) {
+                    selectGate(gate);
+                }
+            });
+        });
+
+        window.onload = function () {
+            resizeCanvas();
+            selectGate(GATES_DATA[0]);
+            applySimulationStep(0);
+            draw();
+        };
+    </script>
+<footer class="text-center text-xs"><p class="mt-2" data-required-footer="microtronic"><a href="https://microtronic.biz/" rel="noopener noreferrer">Powered by Microtronic © 2026 Microtronic Co., Ltd.</a></p></footer>
+</body>
+
+</html>
